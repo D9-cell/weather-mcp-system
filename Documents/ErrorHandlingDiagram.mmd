@@ -1,0 +1,24 @@
+%% Error Handling Flow Diagram
+flowchart TD
+    A[Normal Operation] --> B{Error Occurs?}
+    
+    B -->|Ollama Connection Failed| C[Display: "Could not connect to Ollama.<br/>Please ensure it's running:<br/>  ollama serve"]
+    B -->|MCP Server Connection Failed| D[Display: "Cannot connect to MCP server.<br/>Command: uv run python -m weather_mcp.main<br/>Working directory: /path/to/project"]
+    B -->|API Key Missing| E[Display: "OpenWeatherMap API key not found.<br/>Please set OPENWEATHERMAP_API_KEY in .env"]
+    B -->|Invalid City| F[Display: "City 'InvalidCity123' not found.<br/>Please check the spelling."]
+    B -->|API Rate Limit| G[Display: "API rate limit exceeded.<br/>Please try again later."]
+    B -->|LLM Timeout| H[Display: "Ollama request timed out.<br/>The model might be too large."]
+    B -->|Tool Call Parse Error| I[Continue with text-only response]
+    B -->|Max Iterations| J[Display: "Couldn't complete request<br/>after multiple attempts."]
+    
+    C --> K[Exit with error]
+    D --> K
+    E --> K
+    F --> L[Continue conversation]
+    G --> L
+    H --> L
+    I --> L
+    J --> L
+    
+    K --> M[System Failure]
+    L --> N[Graceful Degradation]

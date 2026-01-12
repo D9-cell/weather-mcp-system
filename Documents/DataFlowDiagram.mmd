@@ -1,0 +1,21 @@
+%% Data Flow Diagram
+graph TD
+    A[User Input<br/>Natural Language<br/>"What's weather in Tokyo?"] --> B[MCP Client]
+    B --> C[LLM Request<br/>Natural Language +<br/>Tool Schemas JSON]
+    C --> D[Ollama LLM]
+    
+    D --> E[LLM Response<br/>Natural Language +<br/>Tool Call JSON<br/>{"name": "get_current_weather",<br/>"arguments": {"city": "Tokyo"}}]
+    E --> F[MCP Client<br/>Parses Tool Call]
+    
+    F --> G[Tool Invocation<br/>Structured JSON<br/>{"city": "Tokyo"}] --> H[MCP Server]
+    H --> I[API Request<br/>HTTP GET<br/>OpenWeatherMap]
+    I --> J[External API<br/>OpenWeatherMap]
+    J --> K[API Response<br/>Raw JSON<br/>Weather Data]
+    K --> L[MCP Server<br/>Formats Response]
+    L --> M[Tool Result<br/>Structured JSON<br/>{"temperature": 15, "humidity": 67, ...}]
+    M --> N[MCP Client]
+    N --> O[Send to LLM<br/>Tool Result JSON]
+    O --> D
+    
+    D --> P[Final Response<br/>Natural Language<br/>"Tokyo is 15°C with clear skies"]
+    P --> Q[User Output<br/>CLI Display]

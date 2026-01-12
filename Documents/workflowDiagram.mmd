@@ -1,0 +1,28 @@
+%% Project Workflow Diagram
+flowchart LR
+    A[User] --> B[CLI Input]
+    B --> C[MCP Client<br/>Initialization]
+    C --> D[Connect to<br/>MCP Server]
+    C --> E[Connect to<br/>Ollama LLM]
+    D --> F[Discover Tools]
+    F --> G[Ready for Input]
+    
+    G --> H[User Query<br/>Natural Language]
+    H --> I[Send to LLM<br/>with Tool Schemas]
+    I --> J[LLM Processes<br/>Intent & Context]
+    J --> K{Detects<br/>Tool Call?}
+    
+    K -->|Yes| L[Extract Tool<br/>Name & Params]
+    L --> M[Call MCP Server<br/>with JSON]
+    M --> N[MCP Server<br/>Validates Request]
+    N --> O[Call External API<br/>OpenWeatherMap]
+    O --> P[Format Response<br/>as JSON]
+    P --> Q[Return to<br/>MCP Client]
+    Q --> R[Send Tool Result<br/>to LLM]
+    R --> S[LLM Generates<br/>Natural Language<br/>Response]
+    S --> T[Display to User]
+    
+    K -->|No| U[LLM Generates<br/>Direct Response]
+    U --> T
+    
+    T --> V[Continue<br/>Conversation]

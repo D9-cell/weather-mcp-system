@@ -1,0 +1,34 @@
+%% Project Architecture Diagram
+graph TD
+    A[User CLI] --> B[MCP Client]
+    B --> C[Local LLM<br/>Ollama]
+    B --> D[MCP Server]
+    D --> E[OpenWeatherMap<br/>API]
+    
+    subgraph "MCP Client Layer"
+        B
+        F[orchestrator.py<br/>Control Flow]
+        G[llm.py<br/>Ollama Adapter]
+        H[mcp.py<br/>MCP Client Wrapper]
+    end
+    
+    subgraph "MCP Server Layer"
+        D
+        I[server.py<br/>MCP Server Impl]
+        J[tools/weather.py<br/>Tool Definitions]
+        K[services/openweather.py<br/>API Client]
+        L[config/settings.py<br/>Configuration]
+    end
+    
+    subgraph "External Dependencies"
+        C
+        E
+    end
+    
+    B --> F
+    B --> G
+    B --> H
+    D --> I
+    D --> J
+    D --> K
+    D --> L

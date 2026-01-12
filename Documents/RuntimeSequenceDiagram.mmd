@@ -1,0 +1,27 @@
+%% Runtime Sequence Diagram
+sequenceDiagram
+    participant U as User
+    participant C as MCP Client
+    participant L as Ollama LLM
+    participant S as MCP Server
+    participant A as OpenWeatherMap API
+
+    Note over U,A: System Initialization
+    C->>S: Connect via stdio
+    S-->>C: Connection established
+    C->>L: Connect via HTTP
+    L-->>C: Connection established
+    C->>S: List tools
+    S-->>C: Tool definitions JSON
+
+    Note over U,A: Query Processing
+    U->>C: "What's weather in Tokyo?"
+    C->>L: Chat request with tools
+    L-->>C: Response with tool call
+    C->>S: Call tool: get_current_weather
+    S->>A: HTTP GET /weather?q=Tokyo
+    A-->>S: Weather data JSON
+    S-->>C: Formatted weather JSON
+    C->>L: Chat request with tool result
+    L-->>C: Natural language response
+    C-->>U: "Tokyo is 15°C with clear skies"
