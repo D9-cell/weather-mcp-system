@@ -1,21 +1,21 @@
 %% Data Flow Diagram
 graph TD
-    A[User Input<br/>Natural Language<br/>"What's weather in Tokyo?"] --> B[MCP Client]
-    B --> C[LLM Request<br/>Natural Language +<br/>Tool Schemas JSON]
+    A["User Input\nNatural Language\n\"What's weather in Tokyo?\""] --> B[MCP Client]
+    B --> C["LLM Request\nNatural Language +\nTool Schemas JSON"]
     C --> D[Ollama LLM]
     
-    D --> E[LLM Response<br/>Natural Language +<br/>Tool Call JSON<br/>{"name": "get_current_weather",<br/>"arguments": {"city": "Tokyo"}}]
-    E --> F[MCP Client<br/>Parses Tool Call]
+    D --> E["LLM Response\nNatural Language +\nTool Call JSON"]
+    E --> F["MCP Client\nParses Tool Call"]
     
-    F --> G[Tool Invocation<br/>Structured JSON<br/>{"city": "Tokyo"}] --> H[MCP Server]
-    H --> I[API Request<br/>HTTP GET<br/>OpenWeatherMap]
-    I --> J[External API<br/>OpenWeatherMap]
-    J --> K[API Response<br/>Raw JSON<br/>Weather Data]
-    K --> L[MCP Server<br/>Formats Response]
-    L --> M[Tool Result<br/>Structured JSON<br/>{"temperature": 15, "humidity": 67, ...}]
+    F --> G["Tool Invocation\nStructured JSON"] --> H[MCP Server]
+    H --> I["API Request\nHTTP GET\nOpenWeatherMap"]
+    I --> J["External API\nOpenWeatherMap"]
+    J --> K["API Response\nRaw JSON\nWeather Data"]
+    K --> L["MCP Server\nFormats Response"]
+    L --> M["Tool Result\nStructured JSON"]
     M --> N[MCP Client]
-    N --> O[Send to LLM<br/>Tool Result JSON]
+    N --> O["Send to LLM\nTool Result JSON"]
     O --> D
     
-    D --> P[Final Response<br/>Natural Language<br/>"Tokyo is 15°C with clear skies"]
-    P --> Q[User Output<br/>CLI Display]
+    D --> P["Final Response\nNatural Language\n\"Tokyo is 15°C with clear skies\""]
+    P --> Q["User Output\nCLI Display"]
